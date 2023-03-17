@@ -3,6 +3,7 @@ using API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 
 namespace API.Controllers
 {
@@ -49,7 +50,6 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<SinhVien>> PostSinhVien(SinhVienDTO requestSinhVien)
         {
-           
             var sinhvien = new SinhVien()
             {
                 TenSV = requestSinhVien.TenSV,
@@ -59,10 +59,7 @@ namespace API.Controllers
                 KhId = requestSinhVien.khoaId,
             };
             
-           
-           
             _db.SinhViens.Add(sinhvien);
-
             await _db.SaveChangesAsync();
             return Ok();
         }
@@ -99,6 +96,23 @@ namespace API.Controllers
             return NoContent();
 
 
+        }
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(string query)
+        {
+            var sinhViens = _db.SinhViens.Include(s => s.Khoa).AsQueryable();
+
+            if (!string.IsNullOrEmpty(query))
+            {
+                sinhViens = sinhViens.Where(s => s.TenSV.Contains(query));
+            }
+
+            if (!string.IsNullOrEmpty(query))
+            {
+                sinhViens = sinhViens.Where(s => s.Khoa.TenKhoa.Contains(query));
+            }
+
+            return Ok(sinhViens.ToList());
         }
     }
 }

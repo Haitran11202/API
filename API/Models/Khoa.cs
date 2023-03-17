@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models
@@ -14,17 +15,12 @@ namespace API.Models
         [Column("TEN_KHOA")]
         public string TenKhoa { get; set; }
 
-        public List<SinhVien> SinhViens { get; set; }
+        public ICollection<SinhVien> SinhViens { get; set; }
 
         public Khoa()
         {
             SinhViens = new List<SinhVien>();
         }
-        public void addSinhVien(SinhVien sinhVien)
-        {
-            SinhViens.Add(sinhVien);
-        }
-        
-        
+       
     }
 }

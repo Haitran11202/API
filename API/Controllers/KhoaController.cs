@@ -43,7 +43,7 @@ namespace API.Controllers
             ).ToListAsync();
             return Ok(result);
         }
-
+       
         [HttpPost]
         public async Task<ActionResult<Khoa>> CreateKhoa(KhoaDTO requestKhoa)
         {
